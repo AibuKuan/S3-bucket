@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive HTML Sample</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); }
+            to { text-shadow: 2px 2px 20px rgba(255, 255, 255, 0.5); }
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .card h3 {
+            color: white;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .card p {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+        }
+
+        .button {
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            margin: 10px;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .button:active {
+            transform: translateY(0);
+        }
+
+        .counter {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .counter-display {
+            font-size: 3em;
+            color: white;
+            font-weight: bold;
+            margin: 20px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .color-picker {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .color-picker label {
+            color: white;
+            font-size: 1.2em;
+            margin-right: 10px;
+        }
+
+        .color-picker input[type="color"] {
+            width: 50px;
+            height: 50px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .color-picker input[type="color"]:hover {
+            transform: scale(1.1);
+        }
+
+        .animated-box {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, #ff9a9e, #fecfef);
+            border-radius: 15px;
+            margin: 20px auto;
+            animation: float 3s ease-in-out infinite;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .animated-box:hover {
+            animation-play-state: paused;
+            transform: scale(1.2) rotate(45deg);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00c6ff, #0072ff);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            box-shadow: 0 0 20px rgba(0, 114, 255, 0.5);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 20px;
+            width: 80%;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .close {
+            color: white;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close:hover {
+            color: #ff6b6b;
+        }
+
+        .input-group {
+            margin: 20px 0;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.9);
+            margin-top: 5px;
+        }
+
+        .input-group label {
+            color: white;
+            font-size: 1.1em;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Interactive HTML Sample</h1>
+        
+        <div class="card" onclick="showModal()">
+            <h3>🎯 Click to Open Modal</h3>
+            <p>This card demonstrates hover effects and click interactions. Click to see a beautiful modal popup!</p>
+        </div>
+
+        <div class="card">
+            <h3>🎨 Color Theme Controller</h3>
+            <div class="color-picker">
+                <label for="colorPicker">Choose a theme color:</label>
+                <input type="color" id="colorPicker" value="#667eea" onchange="changeTheme(this.value)">
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>📊 Interactive Counter</h3>
+            <div class="counter">
+                <div class="counter-display" id="counterDisplay">0</div>
+                <button class="button" onclick="changeCounter(-1)">-</button>
+                <button class="button" onclick="resetCounter()">Reset</button>
+                <button class="button" onclick="changeCounter(1)">+</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>📈 Progress Bar</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+            <button class="button" onclick="animateProgress()">Start Progress</button>
+        </div>
+
+        <div class="card">
+            <h3>🎭 Animated Element</h3>
+            <p>Hover over the floating box below to see the animation effects!</p>
+            <div class="animated-box" onclick="togglePulse(this)"></div>
+        </div>
+
+        <div class="card">
+            <h3>⌨️ Dynamic Content</h3>
+            <div class="input-group">
+                <label for="textInput">Type something:</label>
+                <input type="text" id="textInput" placeholder="Your text will appear below..." oninput="updateDisplay(this.value)">
+            </div>
+            <p id="textDisplay" style="color: white; font-size: 1.2em; margin-top: 10px;">Start typing...</p>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 style="color: white; margin-bottom: 20px;">🎉 Welcome to the Modal!</h2>
+            <p style="color: rgba(255, 255, 255, 0.9); margin-bottom: 20px;">
+                This is a beautiful modal with backdrop blur and smooth animations. 
+                Modern web design at its finest!
+            </p>
+            <button class="button" onclick="closeModal()">Close Modal</button>
+        </div>
+    </div>
+
+    <script>
+        let counter = 0;
+        let progressInterval;
+
+        function changeCounter(value) {
+            counter += value;
+            document.getElementById('counterDisplay').textContent = counter;
+            
+            // Add a nice scale effect
+            const display = document.getElementById('counterDisplay');
+            display.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                display.style.transform = 'scale(1)';
+            }, 150);
+        }
+
+        function resetCounter() {
+            counter = 0;
+            document.getElementById('counterDisplay').textContent = counter;
+        }
+
+        function changeTheme(color) {
+            // Create a new gradient based on the selected color
+            const rgb = hexToRgb(color);
+            const newGradient = `linear-gradient(135deg, ${color} 0%, rgb(${rgb.r * 0.8}, ${rgb.g * 0.8}, ${rgb.b * 0.8}) 100%)`;
+            document.body.style.background = newGradient;
+            
+            // Update modal background too
+            const modalContent = document.querySelector('.modal-content');
+            modalContent.style.background = newGradient;
+        }
+
+        function hexToRgb(hex) {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : null;
+        }
+
+        function animateProgress() {
+            const progressFill = document.getElementById('progressFill');
+            let progress = 0;
+            
+            if (progressInterval) {
+                clearInterval(progressInterval);
+            }
+            
+            progressInterval = setInterval(() => {
+                progress += 2;
+                progressFill.style.width = progress + '%';
+                
+                if (progress >= 100) {
+                    clearInterval(progressInterval);
+                    setTimeout(() => {
+                        progressFill.style.width = '0%';
+                    }, 1000);
+                }
+            }, 50);
+        }
+
+        function showModal() {
+            document.getElementById('modal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function togglePulse(element) {
+            element.classList.toggle('pulse');
+        }
+
+        function updateDisplay(text) {
+            const display = document.getElementById('textDisplay');
+            display.textContent = text || 'Start typing...';
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('modal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Add keyboard support for modal
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Add some random sparkle effects on load
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                const title = document.querySelector('h1');
+                title.style.animation = 'glow 2s ease-in-out infinite alternate';
+            }, 500);
+        });
+    </script>
+</body>
+</html>
